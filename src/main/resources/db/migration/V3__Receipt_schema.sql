@@ -1,0 +1,1 @@
+ALTER TABLE purchase ADD COLUMN receipt_url VARCHAR(2000);

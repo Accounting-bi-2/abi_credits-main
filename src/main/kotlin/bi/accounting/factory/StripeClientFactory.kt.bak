@@ -1,0 +1,15 @@
+package bi.accounting.factory
+
+import com.stripe.Stripe
+import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Value
+import jakarta.inject.Singleton
+
+@Factory
+class StripeClientFactory {
+
+    @Singleton
+    fun stripeClient(@Value("\${stripe.api-key}") apiKey: String) {
+        Stripe.apiKey = apiKey
+    }
+}

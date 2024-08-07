@@ -1,0 +1,64 @@
+micronaut:
+  server:
+    cors:
+      enabled: true
+    base-url: ${APP_BASE_URL:`http://localhost:9000`}
+    port: ${APP_PORT:9000}
+  application:
+    name: abi_credits
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: ${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}
+    enabled: false
+datasources:
+  default:
+    db-type: postgres
+    url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:15432}/${PG_DBNAME:postgres}?schema=credits_schema
+    schema: credits_schema
+    username: ${PG_USER:postgres}
+    password: ${PG_PASSWORD:admin}
+r2dbc:
+  datasources:
+    default:
+      schema-generate: none
+      db-type: postgres
+      url: r2dbc:postgresql://${PG_HOST:localhost}:${PG_PORT:15432}/${PG_DBNAME:postgres}?schema=credits_schema
+      schema: credits_schema
+      username: ${PG_USER:postgres}
+      password: ${PG_PASSWORD:admin}
+flyway:
+  datasources:
+    default:
+      enabled: true
+      validate-migration-naming: true
+
+logger:
+  levels:
+    io.micronaut.security: DEBUG
+    io.micronaut.http: DEBUG
+    io.micronaut.runtime: DEBUG
+
+stripe:
+  api-key: ${STRIPE_API_KEY:sk_test_bA2nrZjTaJXzltvDLUwmqvCJ00TH05OVDs}
+  webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_c65c13da19fda41492bc7ea8ab2526bfc18b50e2acc0769ca7e0d30ab1d1d680}
+
+credits:
+  transaction:
+    rate:
+      GBP: 20
+
+uri:
+  payment-success: ${REDIRECT_URI:`http://localhost:3000/dashboard`}
